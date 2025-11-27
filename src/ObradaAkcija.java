@@ -12,12 +12,12 @@ public class ObradaAkcija {
             try {
                 String unos = br.readLine().trim();
                 akcija = Integer.parseInt(unos);
-                if (akcija < 1 || akcija > 3) {
-                    throw new IllegalArgumentException("Neispravan unos! Odaberite jednu od ponudjenih akcija (1-3)");
+                if (akcija < 1 || akcija > 4) {
+                    throw new IllegalArgumentException("Neispravan unos! Odaberite jednu od ponudjenih akcija (1-4)");
                 }
                 validnaAkcija = true;
             } catch (NumberFormatException e) {
-                System.out.println("Neispravan unos! Ocekivani unos je broj (1-3):");
+                System.out.println("Neispravan unos! Ocekivani unos je broj (1-4):");
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             } catch (Exception e) {
@@ -170,6 +170,41 @@ public class ObradaAkcija {
         } while (!validanUnos);
 
         return tipMotora;
+    }
+
+    public static void uklanjanjeVozila(EvidencijaVozila lista) throws IOException {
+        lista.ispisTabliceVozila();
+
+        int index = 0;
+        boolean validanIndex = false;
+        System.out.printf("Odaberite vozilo koje zelite ukloniti iz evidencije upisivanjem pridruzenog rednog broja (1-%d):\r\n", lista.getSize());
+        do {
+            try {
+                String unos = br.readLine().trim();
+                if (unos.isEmpty()) {
+                    throw new NeispravniPodaciException("Ocekivani unos je broj pridruzen vozilu:");
+                }
+                if (unos.endsWith(".")) {
+                    unos = unos.substring(0, unos.length()-2);
+                }
+                index = Integer.parseInt(unos)-1;
+                if (index < 0 || index > lista.getSize()-1) {
+                    throw new NeispravniPodaciException("Unesite broj pridruzen vozilu:");
+                }
+                validanIndex = true;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (NeispravniPodaciException e) {
+                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Greska!");
+            }
+        } while (!validanIndex);
+
+        lista.ukliniVozilo(index);
+
+        System.out.println("Vozilo uspjesno uklonjeno iz evidencije!");
+
     }
 
 

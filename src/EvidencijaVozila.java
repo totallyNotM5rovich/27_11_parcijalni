@@ -58,6 +58,15 @@ public class EvidencijaVozila {
         spremiPodatke();
     }
 
+    public void ukliniVozilo(int index) throws IOException {
+        vozila.remove(index);
+        spremiPodatke();
+    }
+
+    public int getSize() {
+        return vozila.size();
+    }
+
     public void ispisTabliceVozila() {
         int najduziTip = 10;
         int najduzaRegOznaka = 10;
