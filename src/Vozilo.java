@@ -17,4 +17,15 @@ public class Vozilo {
         return " marke: " + marka + " (reg. oznaka: " + regOznaka + "), " + godProizvodnje + "god.";
     };
 
+    public String getRegOznaka() {
+        return regOznaka;
+    }
+
+    public String getMarka() {
+        return marka;
+    }
+
+    public int getGodProizvodnje() {
+        return godProizvodnje;
+    }
 }

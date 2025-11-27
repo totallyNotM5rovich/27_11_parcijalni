@@ -20,7 +20,7 @@ public class Main {
 
             switch (akcija) {
                 case 1:
-                    listaVozila.ispisVozila();
+                    listaVozila.ispisTabliceVozila();
                     break;
                 case 2:
                     ObradaAkcija.dodavanjeVozila(listaVozila);
@@ -31,5 +31,6 @@ public class Main {
             }
 
         }
+
     }
 }
