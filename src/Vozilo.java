@@ -21,6 +21,18 @@ public class Vozilo {
         return regOznaka;
     }
 
+    public void setRegOznaka(String regOznaka) {
+        this.regOznaka = regOznaka;
+    }
+
+    public void setMarka(String marka) {
+        this.marka = marka;
+    }
+
+    public void setGodProizvodnje(int godProizvodnje) {
+        this.godProizvodnje = godProizvodnje;
+    }
+
     public String getMarka() {
         return marka;
     }

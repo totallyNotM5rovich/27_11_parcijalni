@@ -73,6 +73,7 @@ public class ObradaAkcija {
             switch (akcijaDodavanje) {
                 case 1:
                     tipVozila = odabirTipaVozila();
+                    dodatniPodatak = null;
                     break;
                 case 2:
                     regOznaka = definicijaRegOznake();
@@ -117,6 +118,21 @@ public class ObradaAkcija {
         lista.ukliniVozilo(index);
 
         System.out.println("Vozilo uspjesno uklonjeno iz evidencije!");
+    }
+
+    public static void azuriranjePodataka(EvidencijaVozila lista) throws IOException {
+        if(lista.getSize() == 0) {
+            System.out.println("Evidencijska lista vozila je prazna!");
+            return;
+        }
+
+        lista.ispisTabliceVozila();
+
+        System.out.printf("Odaberite vozilo koje zelite azurirati upisivanjem pridruzenog rednog broja (1-%d):\r\n", lista.getSize());
+
+        int index = odabirVozilaIzListe(lista);
+
+        lista.azurirajVozilo(index);
     }
 
     public static void prikazPodatakaVozila(EvidencijaVozila lista) {
@@ -233,7 +249,7 @@ public class ObradaAkcija {
         return godina;
     }
 
-    private static String unosBrojaVrata() {
+    public static String unosBrojaVrata() {
         String brojVrata = null;
         boolean validanUnos = false;
         System.out.println("\r\nUpisite broj vrata automobila:");
@@ -261,7 +277,7 @@ public class ObradaAkcija {
         return brojVrata;
     }
 
-    private static String unosTipaMotora() {
+    public static String unosTipaMotora() {
         String tipMotora = null;
         boolean validanUnos = false;
         System.out.println("\r\nUpisite tip motora:");

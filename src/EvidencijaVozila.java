@@ -63,12 +63,57 @@ public class EvidencijaVozila {
         spremiPodatke();
     }
 
-    public int getSize() {
-        return vozila.size();
+    public void azurirajVozilo(int index) throws IOException {
+        while(true) {
+            System.out.println("NAPOMENA! Nije moguce promjeniti tip vozila!");
+            System.out.printf(" 1. Azuriraj registracijsku oznaku: %s\r\n", vozila.get(index).getRegOznaka());
+            System.out.printf(" 2. Azuriraj marku vozila: %s\r\n", vozila.get(index).getMarka());
+            System.out.printf(" 3. Azuriraj godinu proizvodenje: %d\r\n", vozila.get(index).getGodProizvodnje());
+            if(vozila.get(index) instanceof Automobil) {
+                System.out.printf(" 4. Azuriraj broj vrata: %d\r\n", ((Automobil) vozila.get(index)).getBrojVrata());
+            } else {
+                System.out.printf(" 4. Azuriraj tip motora: %s\r\n", ((Motocikl) vozila.get(index)).getTipMotora());
+            }
+            System.out.println(" 5. Povratak");
+
+            System.out.println("Odaberite jednu od ponudjenih akcija (1-5):");
+            int akcijaAzuriranje = ObradaAkcija.odabirAkcije(5);
+
+            switch (akcijaAzuriranje) {
+                case 1:
+                    vozila.get(index).setRegOznaka(ObradaAkcija.definicijaRegOznake());
+                    spremiPodatke();
+                    break;
+                case 2:
+                    vozila.get(index).setMarka(ObradaAkcija.definicijaMarke());
+                    spremiPodatke();
+                    break;
+                case 3:
+                    vozila.get(index).setGodProizvodnje(ObradaAkcija.definicijaGodine());
+                    spremiPodatke();
+                    break;
+                case 4:
+                    if(vozila.get(index) instanceof Automobil) {
+                        ((Automobil) vozila.get(index)).setBrojVrata(Integer.parseInt(ObradaAkcija.unosBrojaVrata()));
+                        spremiPodatke();
+                    } else {
+                        ((Motocikl) vozila.get(index)).setTipMotora(ObradaAkcija.unosTipaMotora());
+                        spremiPodatke();
+                    }
+                    break;
+                case 5:
+                    return;
+                default:
+            }
+        }
     }
 
     public void prikazPodatakaVozila(int index) {
         System.out.println(vozila.get(index).prikaziPodatke());
+    }
+
+    public int getSize() {
+        return vozila.size();
     }
 
     public void ispisTabliceVozila() {
