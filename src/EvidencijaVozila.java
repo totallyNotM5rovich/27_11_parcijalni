@@ -67,6 +67,10 @@ public class EvidencijaVozila {
         return vozila.size();
     }
 
+    public void prikazPodatakaVozila(int index) {
+        System.out.println(vozila.get(index).prikaziPodatke());
+    }
+
     public void ispisTabliceVozila() {
         int najduziTip = 10;
         int najduzaRegOznaka = 10;

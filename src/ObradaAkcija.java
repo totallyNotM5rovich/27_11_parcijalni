@@ -27,6 +27,14 @@ public class ObradaAkcija {
         return akcija;
     }
 
+    public static void ispisEvidentiranihVozila(EvidencijaVozila lista) {
+        if(lista.getSize() == 0) {
+            System.out.println("Evidencijska lista vozila je prazna!");
+            return;
+        }
+        lista.ispisTabliceVozila();
+    }
+
     public static void dodavanjeVozila(EvidencijaVozila lista) throws IOException {
         String tipVozila = null;
         String regOznaka = null;
@@ -47,10 +55,10 @@ public class ObradaAkcija {
             System.out.printf(" 4. Definiraj godinu proizvodnje: %s\r\n", ispisGodine);
             if(tipVozila != null) {
                 String ispisDodatnogPodatka = (dodatniPodatak == null) ? "NEDEFINIRAN" : dodatniPodatak;
-                if(tipVozila == "Automobil") {
+                if(tipVozila.equals("Automobil")) {
                     System.out.printf(" 5. Definiraj broj vrata: %s\r\n", ispisDodatnogPodatka);
                 }
-                if(tipVozila == "Motocikl") {
+                if(tipVozila.equals("Motocikl")) {
                     System.out.printf(" 5. Definiraj tip motora: %s\r\n", ispisDodatnogPodatka);
                 }
             }
@@ -94,91 +102,36 @@ public class ObradaAkcija {
         }
     }
 
-    private static String unosBrojaVrata() {
-        String brojVrata = null;
-        boolean validanUnos = false;
-        System.out.println("\r\nUpisite broj vrata automobila:");
-        do {
-            try {
-                String unos = br.readLine().trim();
-                if (unos.isEmpty()) {
-                    throw new NeispravniPodaciException("Broj vrata automobila je obavezan podatak:");
-                }
-                int unosInt = Integer.parseInt(unos);
-                if (unosInt < 1) {
-                    throw new NeispravniPodaciException("Unesite broj vrata automobila:");
-                }
-                brojVrata = unos;
-                validanUnos = true;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (NeispravniPodaciException e) {
-                System.out.println(e.getMessage());
-            } catch (Exception e) {
-                System.out.println("Greska!");
-            }
-        } while (!validanUnos);
-
-        return brojVrata;
-    }
-
-    private static String unosTipaMotora() {
-        String tipMotora = null;
-        boolean validanUnos = false;
-        System.out.println("\r\nUpisite tip motora:");
-        do {
-            try {
-                String unos = br.readLine().trim();
-                if (unos.isEmpty()) {
-                    throw new NeispravniPodaciException("Tip motora je obavezan podatak:");
-                }
-                tipMotora = unos;
-                validanUnos = true;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (NeispravniPodaciException e) {
-                System.out.println(e.getMessage());
-            } catch (Exception e) {
-                System.out.println("Greska!");
-            }
-        } while (!validanUnos);
-
-        return tipMotora;
-    }
-
     public static void uklanjanjeVozila(EvidencijaVozila lista) throws IOException {
+        if(lista.getSize() == 0) {
+            System.out.println("Evidencijska lista vozila je prazna!");
+            return;
+        }
+
         lista.ispisTabliceVozila();
 
-        int index = 0;
-        boolean validanIndex = false;
         System.out.printf("Odaberite vozilo koje zelite ukloniti iz evidencije upisivanjem pridruzenog rednog broja (1-%d):\r\n", lista.getSize());
-        do {
-            try {
-                String unos = br.readLine().trim();
-                if (unos.isEmpty()) {
-                    throw new NeispravniPodaciException("Ocekivani unos je broj pridruzen vozilu:");
-                }
-                if (unos.endsWith(".")) {
-                    unos = unos.substring(0, unos.length()-2);
-                }
-                index = Integer.parseInt(unos)-1;
-                if (index < 0 || index > lista.getSize()-1) {
-                    throw new NeispravniPodaciException("Unesite broj pridruzen vozilu:");
-                }
-                validanIndex = true;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (NeispravniPodaciException e) {
-                System.out.println(e.getMessage());
-            } catch (Exception e) {
-                System.out.println("Greska!");
-            }
-        } while (!validanIndex);
+
+        int index = odabirVozilaIzListe(lista);
 
         lista.ukliniVozilo(index);
 
         System.out.println("Vozilo uspjesno uklonjeno iz evidencije!");
+    }
 
+    public static void prikazPodatakaVozila(EvidencijaVozila lista) {
+        if(lista.getSize() == 0) {
+            System.out.println("Evidencijska lista vozila je prazna!");
+            return;
+        }
+
+        lista.ispisTabliceVozila();
+
+        System.out.printf("Odaberite vozilo cije podatke zelite prikazati upisivanjem pridruzenog rednog broja (1-%d):\r\n", lista.getSize());
+
+        int index = odabirVozilaIzListe(lista);
+
+        lista.prikazPodatakaVozila(index);
     }
 
     public static String odabirTipaVozila() {
@@ -278,6 +231,86 @@ public class ObradaAkcija {
         } while (!validnaGodina);
 
         return godina;
+    }
+
+    private static String unosBrojaVrata() {
+        String brojVrata = null;
+        boolean validanUnos = false;
+        System.out.println("\r\nUpisite broj vrata automobila:");
+        do {
+            try {
+                String unos = br.readLine().trim();
+                if (unos.isEmpty()) {
+                    throw new NeispravniPodaciException("Broj vrata automobila je obavezan podatak:");
+                }
+                int unosInt = Integer.parseInt(unos);
+                if (unosInt < 1) {
+                    throw new NeispravniPodaciException("Unesite broj vrata automobila:");
+                }
+                brojVrata = unos;
+                validanUnos = true;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (NeispravniPodaciException e) {
+                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Greska!");
+            }
+        } while (!validanUnos);
+
+        return brojVrata;
+    }
+
+    private static String unosTipaMotora() {
+        String tipMotora = null;
+        boolean validanUnos = false;
+        System.out.println("\r\nUpisite tip motora:");
+        do {
+            try {
+                String unos = br.readLine().trim();
+                if (unos.isEmpty()) {
+                    throw new NeispravniPodaciException("Tip motora je obavezan podatak:");
+                }
+                tipMotora = unos;
+                validanUnos = true;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (NeispravniPodaciException e) {
+                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Greska!");
+            }
+        } while (!validanUnos);
+
+        return tipMotora;
+    }
+
+    private static int odabirVozilaIzListe(EvidencijaVozila lista) {
+        int index = 0;
+        boolean validanIndex = false;
+        do {
+            try {
+                String unos = br.readLine().trim();
+                if (unos.isEmpty()) {
+                    throw new NeispravniPodaciException("Ocekivani unos je broj pridruzen vozilu:");
+                }
+                if (unos.endsWith(".")) {
+                    unos = unos.substring(0, unos.length()-2);
+                }
+                index = Integer.parseInt(unos)-1;
+                if (index < 0 || index > lista.getSize()-1) {
+                    throw new NeispravniPodaciException("Unesite broj pridruzen vozilu:");
+                }
+                validanIndex = true;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (NeispravniPodaciException e) {
+                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Greska!");
+            }
+        } while (!validanIndex);
+        return index;
     }
 
 }
