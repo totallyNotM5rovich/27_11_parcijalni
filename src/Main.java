@@ -8,8 +8,8 @@ public class Main {
 
         //TODO akcije za implementaciju: dohvacanje  podataka pojedinog vozila (logika kao za uklanjanje, ali poziv prikazPodataka() objekta liste), azuriranje pojedinih svojstava vozila (logika kao za uklanjanje, ali pozivanje setter metoda (koje je potrebno definirati))
         //TODO pametnija validacija podataka i exception handling
-        //TODO izdvojiti (unutar ObradaAkcija.java) algoritme za pojedine unose u zasebne metode (onda ih je moguce ponovo iskoristiti tijekom azuriranja svojstava vozila)
-        String[] akcije = {" 1. Ispis evidentiranih vozila", " 2. Dodaj novo vozilo u evidenciju", " 3. Uklanjanje vozila iz evidencije", " 4. Zatvaranje aplikacije"};
+        //TODO pametnije preraditi algoritme za unos pojedinih podataka
+        String[] akcije = {" 1. Ispis evidentiranih vozila", " 2. Dodaj novo vozilo u evidenciju", " 3. Ukloni vozilo iz evidencije", " 4. Zatvaranje aplikacije"};
 
         beskonacnaPetlja:
         while(true) {
@@ -19,7 +19,7 @@ public class Main {
                 System.out.println(akcija);
             }
             System.out.println("Odaberite jednu od ponudjenih akcija (1-4):");
-            int akcija = ObradaAkcija.odabirAkcije();
+            int akcija = ObradaAkcija.odabirAkcije(4);
 
             switch (akcija) {
                 case 1:

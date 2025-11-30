@@ -5,14 +5,14 @@ import java.io.InputStreamReader;
 public class ObradaAkcija {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    public static int odabirAkcije() {
+    public static int odabirAkcije(int max) {
         boolean validnaAkcija = false;
         int akcija = 1;
         do {
             try {
                 String unos = br.readLine().trim();
                 akcija = Integer.parseInt(unos);
-                if (akcija < 1 || akcija > 4) {
+                if (akcija < 1 || akcija > max) {
                     throw new IllegalArgumentException("Neispravan unos! Odaberite jednu od ponudjenih akcija (1-4)");
                 }
                 validnaAkcija = true;
@@ -29,95 +29,69 @@ public class ObradaAkcija {
 
     public static void dodavanjeVozila(EvidencijaVozila lista) throws IOException {
         String tipVozila = null;
-        boolean validanOdabir = false;
-        System.out.println("\r\nOdaberite (upisivanjem pridruzenog rednog broja) tip vozila koje dodajete (1 ili 2):\r\n 1. Automobil\r\n 2. Motocikl");
-        do {
-            try {
-                String unos = br.readLine().trim();
-                if (unos.endsWith(".")) {
-                    unos = unos.substring(0,1);
-                }
-                if (!(unos.equals("1") || unos.equals("2"))) {
-                    throw new NeispravniPodaciException("Odaberite jedan od ponudjenih tipova vozila (1 ili 2):\r\n 1. Automobil\r\n 2. Motocikl");
-                }
-                tipVozila = unos.equals("1") ? "Automobil" : "Motocikl";
-                validanOdabir = true;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (NeispravniPodaciException e) {
-                System.out.println(e.getMessage());
-            } catch (Exception e) {
-                System.out.println("Greska!");
-            }
-        } while (!validanOdabir);
-
         String regOznaka = null;
-        boolean validnaRegOznaka = false;
-        System.out.println("\r\nUpisite registracijsku oznaku vozila koje dodajete: ");
-        do {
-            try {
-                String unos = br.readLine().trim();
-                if (unos.isEmpty()) {
-                    throw new NeispravniPodaciException("Registracijska oznaka vozila je obavezan podatak. Unesite marku vozila: ");
-                }
-                regOznaka = unos;
-                validnaRegOznaka = true;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (NeispravniPodaciException e) {
-                System.out.println(e.getMessage());
-            } catch (Exception e) {
-                System.out.println("Greska!");
-            }
-        } while (!validnaRegOznaka);
-
         String marka = null;
-        boolean validnaMarka = false;
-        System.out.println("\r\nUpisite marku vozila koje dodajete: ");
-        do {
-            try {
-                String unos = br.readLine().trim();
-                if (unos.isEmpty()) {
-                    throw new NeispravniPodaciException("Marka vozila je obavezan podatak. Upisite marku vozila: ");
-                }
-                marka = unos;
-                validnaMarka = true;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (NeispravniPodaciException e) {
-                System.out.println(e.getMessage());
-            } catch (Exception e) {
-                System.out.println("Greska!");
-            }
-        } while (!validnaMarka);
-
         int godina = 0;
-        boolean validnaGodina = false;
-        System.out.println("\r\nUpisite godinu proizvodnje vozila:");
-        do {
-            try {
-                String unos = br.readLine().trim();
-                int unosInt = Integer.parseInt(unos);
-                if (unosInt < 0) {
-                    throw new NeispravniPodaciException("Godina proizvodnje ne moze biti negativan broj.\r\nUpisite godineu proizvodnje:");
+        String dodatniPodatak = null;
+        dodajVoziloLoop:
+        while(true) {
+
+
+            String ispisTipVozila = (tipVozila == null) ? "NEDEFINIRAN" : tipVozila;
+            System.out.printf(" 1. Odaberi tip vozila: %s\r\n", ispisTipVozila);
+            String ispisRegOznake = (regOznaka == null) ? "NEDEFINIRANA" : regOznaka;
+            System.out.printf(" 2. Definiraj registracijsku oznaku: %s\r\n", ispisRegOznake);
+            String ispisMarke = (marka == null) ? "NEDEFINIRANA" : marka;
+            System.out.printf(" 3. Definiraj marku vozila: %s\r\n", ispisMarke);
+            String ispisGodine = (godina == 0) ? "NEDEFINIRANA" : String.format("%d", godina);
+            System.out.printf(" 4. Definiraj godinu proizvodnje: %s\r\n", ispisGodine);
+            if(tipVozila != null) {
+                String ispisDodatnogPodatka = (dodatniPodatak == null) ? "NEDEFINIRAN" : dodatniPodatak;
+                if(tipVozila == "Automobil") {
+                    System.out.printf(" 5. Definiraj broj vrata: %s\r\n", ispisDodatnogPodatka);
                 }
-                godina = unosInt;
-                validnaGodina = true;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (NeispravniPodaciException e) {
-                System.out.println(e.getMessage());
-            } catch (Exception e) {
-                System.out.println("Greska!");
+                if(tipVozila == "Motocikl") {
+                    System.out.printf(" 5. Definiraj tip motora: %s\r\n", ispisDodatnogPodatka);
+                }
             }
-        } while (!validnaGodina);
+            System.out.println(" 6. Odustani");
+            if(tipVozila != null && regOznaka != null && marka != null && godina != 0 && dodatniPodatak != null) {
+                System.out.println(" 7. Dodaj vozilo");
+            }
 
-        String dodatniPodatak = tipVozila.equals("Automobil") ? unosBrojaVrata() : unosTipaMotora();
+            System.out.println("Odaberite jednu od ponudjenih akcija (1-7):");
+            int akcijaDodavanje = ObradaAkcija.odabirAkcije(7);
 
-        lista.dodajVozilo(tipVozila, regOznaka, marka, godina, dodatniPodatak);
+            switch (akcijaDodavanje) {
+                case 1:
+                    tipVozila = odabirTipaVozila();
+                    break;
+                case 2:
+                    regOznaka = definicijaRegOznake();
+                    break;
+                case 3:
+                    marka = definicijaMarke();
+                    break;
+                case 4:
+                    godina = definicijaGodine();
+                    break;
+                case 5:
+                    if(tipVozila != null) {
+                        dodatniPodatak = tipVozila.equals("Automobil") ? unosBrojaVrata() : unosTipaMotora();
+                    }
+                    break;
+                case 6:
+                    break dodajVoziloLoop;
+                case 7:
+                    if(tipVozila != null && regOznaka != null && marka != null && godina != 0 && dodatniPodatak != null) {
+                        lista.dodajVozilo(tipVozila, regOznaka, marka, godina, dodatniPodatak);
+                        System.out.println("Vozilo uspjesno dodano u evidenciju!");
+                    }
+                    break dodajVoziloLoop;
+                default:
+            }
 
-        System.out.println("Vozilo uspjesno dodano u evidenciju!");
-
+        }
     }
 
     private static String unosBrojaVrata() {
@@ -207,5 +181,103 @@ public class ObradaAkcija {
 
     }
 
+    public static String odabirTipaVozila() {
+        String tipVozila = null;
+        boolean validanOdabir = false;
+        System.out.println("\r\nOdaberite (upisivanjem pridruzenog rednog broja) tip vozila koje dodajete (1 ili 2):\r\n 1. Automobil\r\n 2. Motocikl");
+        do {
+            try {
+                String unos = br.readLine().trim();
+                if (unos.endsWith(".")) {
+                    unos = unos.substring(0,1);
+                }
+                if (!(unos.equals("1") || unos.equals("2"))) {
+                    throw new NeispravniPodaciException("Odaberite jedan od ponudjenih tipova vozila (1 ili 2):\r\n 1. Automobil\r\n 2. Motocikl");
+                }
+                tipVozila = unos.equals("1") ? "Automobil" : "Motocikl";
+                validanOdabir = true;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (NeispravniPodaciException e) {
+                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Greska!");
+            }
+        } while (!validanOdabir);
+        return tipVozila;
+    }
+
+    public static String definicijaRegOznake() {
+        String regOznaka = null;
+        boolean validnaRegOznaka = false;
+        System.out.println("\r\nUpisite registracijsku oznaku vozila koje dodajete: ");
+        do {
+            try {
+                String unos = br.readLine().trim();
+                if (unos.isEmpty()) {
+                    throw new NeispravniPodaciException("Registracijska oznaka vozila je obavezan podatak. Unesite marku vozila: ");
+                }
+                regOznaka = unos;
+                validnaRegOznaka = true;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (NeispravniPodaciException e) {
+                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Greska!");
+            }
+        } while (!validnaRegOznaka);
+
+        return regOznaka;
+    }
+
+    public static String definicijaMarke() {
+        String marka = null;
+        boolean validnaMarka = false;
+        System.out.println("\r\nUpisite marku vozila koje dodajete: ");
+        do {
+            try {
+                String unos = br.readLine().trim();
+                if (unos.isEmpty()) {
+                    throw new NeispravniPodaciException("Marka vozila je obavezan podatak. Upisite marku vozila: ");
+                }
+                marka = unos;
+                validnaMarka = true;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (NeispravniPodaciException e) {
+                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Greska!");
+            }
+        } while (!validnaMarka);
+
+        return marka;
+    }
+
+    public static int definicijaGodine() {
+        int godina = 0;
+        boolean validnaGodina = false;
+        System.out.println("\r\nUpisite godinu proizvodnje vozila:");
+        do {
+            try {
+                String unos = br.readLine().trim();
+                int unosInt = Integer.parseInt(unos);
+                if (unosInt < 0) {
+                    throw new NeispravniPodaciException("Godina proizvodnje ne moze biti negativan broj.\r\nUpisite godineu proizvodnje:");
+                }
+                godina = unosInt;
+                validnaGodina = true;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (NeispravniPodaciException e) {
+                System.out.println(e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Greska!");
+            }
+        } while (!validnaGodina);
+
+        return godina;
+    }
 
 }
