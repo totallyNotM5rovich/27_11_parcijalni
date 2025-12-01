@@ -6,6 +6,8 @@ public class Main {
 
         //TODO pametnija validacija podataka i exception handling
         //TODO pametnije preraditi algoritme za unos pojedinih podataka
+        //TODO ujednaciti ispise (pr. negdje koristim upisi, upisite, unesite itd)
+
         String[] akcije = {" 1. Ispis evidentiranih vozila", " 2. Dodaj novo vozilo u evidenciju", " 3. Ukloni vozilo iz evidencije", " 4. Azuriraj podatke vozila", " 5. Prikaz podataka vozila", " 6. Izvoz podataka u tekstualnu datoteku", " 7. Zatvaranje aplikacije"};
 
         beskonacnaPetlja:

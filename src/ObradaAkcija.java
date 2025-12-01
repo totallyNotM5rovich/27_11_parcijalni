@@ -1,4 +1,3 @@
-import java.awt.desktop.SystemSleepEvent;
 import java.io.*;
 
 public class ObradaAkcija {
@@ -100,7 +99,7 @@ public class ObradaAkcija {
             }
 
         }
-    }
+    } //TODO skratiti kod (ispise kao sto su u izvoz podataka())
 
     public static void uklanjanjeVozila(EvidencijaVozila lista) throws IOException {
         if(lista.getSize() == 0) {
@@ -233,7 +232,7 @@ public class ObradaAkcija {
         } while (!validnaRegOznaka);
 
         return regOznaka;
-    }
+    } //TODO validacija sa regexom ^[A-ZĆČĐŠŽ]-\d{3,4}-[A-Z]{1,2}$
 
     public static String definicijaMarke() {
         String marka = null;
@@ -282,7 +281,7 @@ public class ObradaAkcija {
         } while (!validnaGodina);
 
         return godina;
-    }
+    } //TODO validacija da je int u rasponu 1885 (godina proizvodnje prvog automobila i motocikla) - trenutna godina
 
     public static String unosBrojaVrata() {
         String brojVrata = null;
@@ -416,7 +415,7 @@ public class ObradaAkcija {
             System.out.println("Greska: " + e.getMessage());
         }
         System.out.printf("Kreirana datoteka: %s\r\nNa lokaciji: %s\r\n", new File(destinacijskiPath).getName(), new File(destinacijskiPath).getAbsolutePath());
-    }
+    } //TODO nakon kreiranja destinacijskiPath (za slucajeve kada je naziv datoteke definiran) napraviti provjeru postoji li vec na definiranoj adresi istoimena datoteka jer ce biti prebrisana (konstruirati u obliku confirm upita)
 
     private static int odabirVozilaIzListe(EvidencijaVozila lista) {
         int index = 0;
