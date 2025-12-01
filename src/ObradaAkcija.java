@@ -1,6 +1,5 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.awt.desktop.SystemSleepEvent;
+import java.io.*;
 
 public class ObradaAkcija {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -32,7 +31,7 @@ public class ObradaAkcija {
             System.out.println("Evidencijska lista vozila je prazna!");
             return;
         }
-        lista.ispisTabliceVozila();
+        System.out.println(lista.ispisTabliceVozila());
     }
 
     public static void dodavanjeVozila(EvidencijaVozila lista) throws IOException {
@@ -109,7 +108,7 @@ public class ObradaAkcija {
             return;
         }
 
-        lista.ispisTabliceVozila();
+        System.out.println(lista.ispisTabliceVozila());
 
         System.out.printf("Odaberite vozilo koje zelite ukloniti iz evidencije upisivanjem pridruzenog rednog broja (1-%d):\r\n", lista.getSize());
 
@@ -126,7 +125,7 @@ public class ObradaAkcija {
             return;
         }
 
-        lista.ispisTabliceVozila();
+        System.out.println(lista.ispisTabliceVozila());
 
         System.out.printf("Odaberite vozilo koje zelite azurirati upisivanjem pridruzenog rednog broja (1-%d):\r\n", lista.getSize());
 
@@ -141,13 +140,49 @@ public class ObradaAkcija {
             return;
         }
 
-        lista.ispisTabliceVozila();
+        System.out.println(lista.ispisTabliceVozila());
 
         System.out.printf("Odaberite vozilo cije podatke zelite prikazati upisivanjem pridruzenog rednog broja (1-%d):\r\n", lista.getSize());
 
         int index = odabirVozilaIzListe(lista);
 
         lista.prikazPodatakaVozila(index);
+    }
+
+    public static void izvozPodataka(EvidencijaVozila lista) {
+        if (lista.getSize() == 0) {
+            System.out.println("Evidencijska lista vozila je prazna!");
+            return;
+        }
+        String defaultDir = System.getProperty("user.home") + "\\EV_output";
+        String destinacijskiDir = null;
+        String nazivDatoteke = null;
+
+        izvozPodatakaLoop:
+        while(true) {
+            System.out.printf(" 1. Definiraj apsolutnu adresu destinacijskog direktorija: %s\r\n", (destinacijskiDir == null) ? (defaultDir + " (predefinirano)") : destinacijskiDir);
+            System.out.printf(" 2. Definiraj naziv izlazne datoteke: %s\r\n", (nazivDatoteke == null) ? "NEDEFINIRAN (opcionalno)" : nazivDatoteke);
+            System.out.println(" 3. Spremi datoteku");
+            System.out.println(" 4. Povratak");
+
+            System.out.println("Odaberite jednu od ponudjenih akcija (1-4):");
+            int akcijaIzvoz = ObradaAkcija.odabirAkcije(4);
+
+            switch (akcijaIzvoz) {
+                case 1:
+                    destinacijskiDir = definicijaDestinacijskogDir();
+                    break;
+                case 2:
+                    nazivDatoteke = definicijaOpcionalnogNaziva();
+                    break;
+                case 3:
+                    izvozPodatakaAlg(destinacijskiDir, nazivDatoteke, lista);
+                    break izvozPodatakaLoop;
+                case 4:
+                    break izvozPodatakaLoop;
+                default:
+            }
+        }
     }
 
     public static String odabirTipaVozila() {
@@ -299,6 +334,88 @@ public class ObradaAkcija {
         } while (!validanUnos);
 
         return tipMotora;
+    }
+
+    private static String definicijaDestinacijskogDir() {
+        String destinacijskiDir = null;
+        boolean validanDir = false;
+        System.out.println("Upisi apsolutnu apsolutnu adresu destinacijskog direktorija:");
+        do {
+            try {
+                String unos = br.readLine().trim();
+                if(unos.isEmpty()) {
+                    return null;
+                }
+                if(!new File(unos).exists()) {
+                    throw new NeispravniPodaciException("Ne postoji direktorij sa definiranom adresom, unesite ispravanu adresu ili potvrdite sa praznim unosom:");
+                }
+                if(!new File(unos).isDirectory()) {
+                    throw new NeispravniPodaciException("Unesena adresa nije direktorij, unesite adresu destinacijskog direktorija:");
+                }
+                destinacijskiDir = unos;
+                validanDir = true;
+            } catch (NeispravniPodaciException e) {
+                System.out.println(e.getMessage());
+            } catch (IOException e) {
+                System.out.println("Greska: " + e.getMessage());
+            }
+        } while (!validanDir);
+
+        return destinacijskiDir;
+    }
+
+    private static String definicijaOpcionalnogNaziva() {
+        String naziv = null;
+        boolean validanNaziv = false;
+        System.out.println("Upisi naziv izlazne datoteke (bez ekstenzije):");
+        do {
+            try {
+                String unos = br.readLine().trim();
+                if(unos.isEmpty()) {
+                    return null;
+                }
+                if(!unos.matches("^[A-Za-z0-9._-]")) {
+                    throw new NeispravniPodaciException("Upisani naziv sadrzi nedozvoljene znakove (u imenovanju datoteka dozvoljeni su alfanumericki znakovi, te znakovi \".\", \"_\" i \"-\").\r\nUpisite validan naziv ili potvrdite sa praznim unosom:");
+                }
+                naziv = unos;
+                validanNaziv = true;
+            } catch (NeispravniPodaciException e) {
+                System.out.println(e.getMessage());
+            } catch (IOException e) {
+                System.out.println("Greska: " + e.getMessage());
+            }
+        } while(!validanNaziv);
+        return naziv;
+    }
+
+    private static void izvozPodatakaAlg(String destinacijskiDir, String naziv, EvidencijaVozila lista) {
+        String defaultDir = System.getProperty("user.home") + "\\EV_output";
+        if(destinacijskiDir == null) {
+            if(!new File(defaultDir).exists()) {
+                new File(defaultDir).mkdir();
+            }
+        }
+
+        String defaultNaziv = "EV_podaci";
+        if(naziv == null) {
+            int i = 1;
+            while(new File(String.format("%s\\%s.txt", defaultDir, defaultNaziv)).exists()) {
+                defaultNaziv = "EV_podaci" + i++;
+            }
+        }
+
+        String destinacijskiPath = String.format("%s\\%s.txt", ((destinacijskiDir == null) ? defaultDir : destinacijskiDir), ((naziv == null) ? defaultNaziv : naziv));
+
+        try (Reader tablica = new StringReader(lista.ispisTabliceVozila());
+            Writer fw = new FileWriter(destinacijskiPath)) {
+            int c;
+            while ((c = tablica.read()) != -1) {
+                fw.write(c);
+            }
+        } catch (IOException e) {
+            System.out.println("Greska: " + e.getMessage());
+        }
+        System.out.printf("Kreirana datoteka: %s\r\nNa lokaciji: %s\r\n", new File(destinacijskiPath).getName(), new File(destinacijskiPath).getAbsolutePath());
     }
 
     private static int odabirVozilaIzListe(EvidencijaVozila lista) {

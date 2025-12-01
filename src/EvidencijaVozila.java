@@ -116,7 +116,7 @@ public class EvidencijaVozila {
         return vozila.size();
     }
 
-    public void ispisTabliceVozila() {
+    public String ispisTabliceVozila() {
         int najduziTip = 10;
         int najduzaRegOznaka = 10;
         int najduzaMarka = 5;
@@ -133,7 +133,7 @@ public class EvidencijaVozila {
         char tSpojnica = '\u2533';
         char krizanje = '\u254b';
 
-        System.out.println("\r\nLista evidentiranih vozila:");
+//        System.out.println("\r\nLista evidentiranih vozila:");
 
         StringBuilder tablica = new StringBuilder();
         for (int i=0; i<4; i++) {
@@ -212,9 +212,8 @@ public class EvidencijaVozila {
                 tablica.append(' ');
             }
             tablica.append(okomitaLinija + " " + vozila.get(i).getGodProizvodnje() + "\r\n");
-
-
         }
-        System.out.println(tablica);
+
+        return tablica.toString();
     }
 }
