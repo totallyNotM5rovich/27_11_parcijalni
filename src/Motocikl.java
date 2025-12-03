@@ -16,11 +16,11 @@ public class Motocikl extends Vozilo {
 
     @Override
     public String prikaziPodatke() {
-        return "Motocikl" + super.prikaziPodatke() + ", " + tipMotora + " tip motora.";
+        return String.format("%s %s, %s tip motora.", TipVozilaEnum.MOTOCIKL.getString(), super.prikaziPodatke(), tipMotora);
     }
 
     @Override
     public String ucitajPodatke() {
-        return "Motocikl/" + super.ucitajPodatke() + "/" + tipMotora;
+        return String.format("%s/%s/%s", TipVozilaEnum.MOTOCIKL.getString(), super.ucitajPodatke(), tipMotora);
     }
 }

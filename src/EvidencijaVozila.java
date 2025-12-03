@@ -20,10 +20,10 @@ public class EvidencijaVozila {
             while ((vozilo = br.readLine()) != null) {
                 String[] argumenti = vozilo.split("/");
 
-                if (argumenti[0].equals("Automobil")) {
+                if (argumenti[0].equals(TipVozilaEnum.AUTOMOBIL.getString())) {
                     vozila.add(new Automobil(argumenti[1], argumenti[2], Integer.parseInt(argumenti[3]), Integer.parseInt(argumenti[4])));
                 }
-                if (argumenti[0].equals("Motocikl")) {
+                if (argumenti[0].equals(TipVozilaEnum.MOTOCIKL.getString())) {
                     vozila.add(new Motocikl(argumenti[1], argumenti[2], Integer.parseInt(argumenti[3]), argumenti[4]));
                 }
             }
@@ -49,10 +49,10 @@ public class EvidencijaVozila {
     }
 
     public void dodajVozilo(String tipVozila, String regOznaka, String marka, int godProizvodnje, String dodatnoSvojstvo) throws IOException {
-        if (tipVozila.equals("Automobil")) {
+        if (tipVozila.equals(TipVozilaEnum.AUTOMOBIL.getString())) {
             vozila.add(new Automobil(regOznaka, marka, godProizvodnje, Integer.parseInt(dodatnoSvojstvo)));
         }
-        if (tipVozila.equals("Motocikl")) {
+        if (tipVozila.equals(TipVozilaEnum.MOTOCIKL.getString())) {
             vozila.add(new Motocikl(regOznaka, marka, godProizvodnje, dodatnoSvojstvo));
         }
         spremiPodatke();
@@ -198,7 +198,7 @@ public class EvidencijaVozila {
 
         for (int i = 0; i < vozila.size(); i++) {
             String redniBroj = String.format(" %d.", (i+1));
-            String tipVozila = (vozila.get(i) instanceof Automobil) ? "Automobil" : "Motocikl";
+            String tipVozila = (vozila.get(i) instanceof Automobil) ? TipVozilaEnum.AUTOMOBIL.getString() : TipVozilaEnum.MOTOCIKL.getString();
             tablica.append(redniBroj);
             for (int j = redniBroj.length(); j<najduziRedniBroj + 3; j++) {
                 tablica.append(' ');

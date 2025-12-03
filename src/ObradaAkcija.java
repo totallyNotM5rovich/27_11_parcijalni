@@ -47,12 +47,11 @@ public class ObradaAkcija {
             System.out.printf(" 3. Definiraj marku vozila: %s\r\n", ((marka == null) ? "NEDEFINIRANA" : marka));
             System.out.printf(" 4. Definiraj godinu proizvodnje: %s\r\n", ((godina == 0) ? "NEDEFINIRANA" : String.format("%d", godina)));
             if(tipVozila != null) {
-                String ispisDodatnogPodatka = (dodatniPodatak == null) ? "NEDEFINIRAN" : dodatniPodatak;
-                if(tipVozila.equals("Automobil")) {
-                    System.out.printf(" 5. Definiraj broj vrata: %s\r\n", ispisDodatnogPodatka);
+                if(tipVozila.equals(TipVozilaEnum.AUTOMOBIL.getString())) {
+                    System.out.printf(" 5. Definiraj broj vrata: %s\r\n", ((dodatniPodatak == null) ? "NEDEFINIRAN" : dodatniPodatak));
                 }
-                if(tipVozila.equals("Motocikl")) {
-                    System.out.printf(" 5. Definiraj tip motora: %s\r\n", ispisDodatnogPodatka);
+                if(tipVozila.equals(TipVozilaEnum.MOTOCIKL.getString())) {
+                    System.out.printf(" 5. Definiraj tip motora: %s\r\n", ((dodatniPodatak == null) ? "NEDEFINIRAN" : dodatniPodatak));
                 }
             }
             System.out.println(" 6. Odustani");
@@ -79,7 +78,7 @@ public class ObradaAkcija {
                     break;
                 case 5:
                     if(tipVozila != null) {
-                        dodatniPodatak = tipVozila.equals("Automobil") ? unosBrojaVrata() : unosTipaMotora();
+                        dodatniPodatak = tipVozila.equals(TipVozilaEnum.AUTOMOBIL.getString()) ? unosBrojaVrata() : unosTipaMotora();
                     }
                     break;
                 case 6:
@@ -195,7 +194,7 @@ public class ObradaAkcija {
                 if (!(unos.equals("1") || unos.equals("2"))) {
                     throw new NeispravniPodaciException("Odaberite jedan od ponudjenih tipova vozila (1 ili 2):\r\n 1. Automobil\r\n 2. Motocikl");
                 }
-                tipVozila = unos.equals("1") ? "Automobil" : "Motocikl";
+                tipVozila = unos.equals("1") ? TipVozilaEnum.AUTOMOBIL.getString() : TipVozilaEnum.MOTOCIKL.getString();
                 validanOdabir = true;
             } catch (IOException e) {
                 throw new RuntimeException(e);

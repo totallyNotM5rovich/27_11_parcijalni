@@ -14,7 +14,7 @@ public class Vozilo {
     };
 
     public String prikaziPodatke() {
-        return " marke: " + marka + " (reg. oznaka: " + regOznaka + "), " + godProizvodnje + "god.";
+        return String.format("marke: %s (reg. oznaka: %s), %d god.", marka, regOznaka, godProizvodnje);
     };
 
     public String getRegOznaka() {

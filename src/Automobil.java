@@ -16,11 +16,11 @@ public class Automobil extends Vozilo {
 
     @Override
     public String prikaziPodatke() {
-        return "Automobil" + super.prikaziPodatke() + ", " + brojVrata + " vrata.";
+        return String.format("%s %s, %s vrata.", TipVozilaEnum.AUTOMOBIL.getString(), super.prikaziPodatke(), brojVrata);
     }
 
     @Override
     public String ucitajPodatke() {
-        return "Automobil/" + super.ucitajPodatke() + "/" + brojVrata;
+        return String.format("%s/%s/%d", TipVozilaEnum.AUTOMOBIL.getString(), super.ucitajPodatke(), brojVrata);
     }
 }
