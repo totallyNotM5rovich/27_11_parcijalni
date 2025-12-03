@@ -42,15 +42,10 @@ public class ObradaAkcija {
         dodajVoziloLoop:
         while(true) {
 
-
-            String ispisTipVozila = (tipVozila == null) ? "NEDEFINIRAN" : tipVozila;
-            System.out.printf(" 1. Odaberi tip vozila: %s\r\n", ispisTipVozila);
-            String ispisRegOznake = (regOznaka == null) ? "NEDEFINIRANA" : regOznaka;
-            System.out.printf(" 2. Definiraj registracijsku oznaku: %s\r\n", ispisRegOznake);
-            String ispisMarke = (marka == null) ? "NEDEFINIRANA" : marka;
-            System.out.printf(" 3. Definiraj marku vozila: %s\r\n", ispisMarke);
-            String ispisGodine = (godina == 0) ? "NEDEFINIRANA" : String.format("%d", godina);
-            System.out.printf(" 4. Definiraj godinu proizvodnje: %s\r\n", ispisGodine);
+            System.out.printf(" 1. Odaberi tip vozila: %s\r\n", ((tipVozila == null) ? "NEDEFINIRAN" : tipVozila));
+            System.out.printf(" 2. Definiraj registracijsku oznaku: %s\r\n", ((regOznaka == null) ? "NEDEFINIRANA" : regOznaka));
+            System.out.printf(" 3. Definiraj marku vozila: %s\r\n", ((marka == null) ? "NEDEFINIRANA" : marka));
+            System.out.printf(" 4. Definiraj godinu proizvodnje: %s\r\n", ((godina == 0) ? "NEDEFINIRANA" : String.format("%d", godina)));
             if(tipVozila != null) {
                 String ispisDodatnogPodatka = (dodatniPodatak == null) ? "NEDEFINIRAN" : dodatniPodatak;
                 if(tipVozila.equals("Automobil")) {
@@ -93,13 +88,16 @@ public class ObradaAkcija {
                     if(tipVozila != null && regOznaka != null && marka != null && godina != 0 && dodatniPodatak != null) {
                         lista.dodajVozilo(tipVozila, regOznaka, marka, godina, dodatniPodatak);
                         System.out.println("Vozilo uspjesno dodano u evidenciju!");
+                    } else {
+                        System.out.println("Neuspjesno dodavanje novog vozila! Niste unesli sve potrebne podatke!");
+                        break;
                     }
                     break dodajVoziloLoop;
                 default:
             }
 
         }
-    } //TODO skratiti kod (ispise kao sto su u izvoz podataka())
+    }
 
     public static void uklanjanjeVozila(EvidencijaVozila lista) throws IOException {
         if(lista.getSize() == 0) {

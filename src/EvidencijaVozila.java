@@ -117,6 +117,7 @@ public class EvidencijaVozila {
     }
 
     public String ispisTabliceVozila() {
+        int najduziRedniBroj = Integer.toString(vozila.size()).length();
         int najduziTip = 10;
         int najduzaRegOznaka = 10;
         int najduzaMarka = 5;
@@ -133,10 +134,9 @@ public class EvidencijaVozila {
         char tSpojnica = '\u2533';
         char krizanje = '\u254b';
 
-//        System.out.println("\r\nLista evidentiranih vozila:");
 
         StringBuilder tablica = new StringBuilder();
-        for (int i=0; i<4; i++) {
+        for (int i=0; i<najduziRedniBroj + 3; i++) {
             tablica.append(vodoravnaLinija);
         }
         tablica.append(tSpojnica);
@@ -157,7 +157,11 @@ public class EvidencijaVozila {
         }
 
 
-        tablica.append("\r\n #  " + okomitaLinija + " TIP VOZILA");
+        tablica.append("\r\n # ");
+        for (int i=1; i<najduziRedniBroj+1; i++) {
+            tablica.append(' ');
+        }
+        tablica.append(okomitaLinija + " TIP VOZILA");
         for (int i=10; i<najduziTip + 1; i++) {
             tablica.append(' ');
         }
@@ -171,7 +175,7 @@ public class EvidencijaVozila {
         }
         tablica.append(okomitaLinija + " GODINA\r\n");
 
-        for (int i=0; i<4; i++) {
+        for (int i=0; i<najduziRedniBroj + 3; i++) {
             tablica.append(vodoravnaLinija);
         }
         tablica.append(krizanje);
@@ -196,7 +200,7 @@ public class EvidencijaVozila {
             String redniBroj = String.format(" %d.", (i+1));
             String tipVozila = (vozila.get(i) instanceof Automobil) ? "Automobil" : "Motocikl";
             tablica.append(redniBroj);
-            for (int j = redniBroj.length(); j<4; j++) {
+            for (int j = redniBroj.length(); j<najduziRedniBroj + 3; j++) {
                 tablica.append(' ');
             }
             tablica.append(okomitaLinija + " " + tipVozila);
